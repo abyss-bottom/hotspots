@@ -4,20 +4,21 @@ import Footer from "./components/Footer.vue";
 import HotTopicLayout from "./pager/HotspotLayout.vue";
 
 import {Apis} from "./apis/apis.js";
+import HotspotView from "./components/HotspotView.vue";
 
 export default {
   name: "App",
-  components: {Footer, HotTopicLayout, Header},
+  components: {HotspotView, Footer, HotTopicLayout, Header},
   data() {
     return {
-      ks: {}
+      platforms: {}
     }
   },
   methods: {},
   mounted() {
-    Apis.getInstance().hotspotInfo("ks")
+    Apis.getInstance().hotspotPlatforms()
         .then(r => {
-          this.ks = r
+          this.platforms = r
         }).catch(e => {
 
     })
@@ -26,12 +27,13 @@ export default {
 </script>
 
 <template>
-  <div>
-    <Header/>
+  <div class="relative">
+    <Header class="sticky top-0"/>
     <div>
-      <p>热点</p>
-      <div v-for="hot in ks">
-        <span>{{ hot.title }}</span>
+      <div class="container flex justify-center mx-auto p-4">
+        <div v-for="platform in platforms">
+          <HotspotView class="m-3" :platform="platform"/>
+        </div>
       </div>
     </div>
     <Footer/>
